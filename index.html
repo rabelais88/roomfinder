@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<head>
+  <title>객실 검색기</title>
+  <script src="/pub/vue.min.js"></script>
+</head>
+<body>
+  <style>
+    html, body{
+      margin:0;
+      padding:0;
+    }
+    .room{
+      padding:10px;
+      margin:5px;
+      box-shadow:0 0 2px 2px rgba(0,0,0,0.2);
+      font-size:13px;
+      text-align:center;
+    }
+    .room > b{
+      font-size:15px;
+    }
+    .room:hover{
+      background-color:cornflowerblue;
+    }
+    .disabled{
+      background-color:darkred;
+    }
+    .disabled:hover{
+      background-color:rgba(255,50,50,0.8);
+    }
+    .floor{
+      display:flex;
+    }
+    .title{
+      text-align:center;
+      background-color:black;
+      color:white;
+    }
+    .title > * {
+      padding: 0;
+      margin:0;
+    }
+    .title > p{
+      font-size:10px;
+    }
+    .options{
+      display:flex;
+      flex-wrap:wrap;
+      padding:10px;
+    }
+    .options > div{
+      padding:5px;
+    }
+  </style>
+  <div id="app">
+    <div>
+      <div class="title">
+        <h3>객실 검색기</h3>
+        <p>만든사람 박성렬</p>
+      </div>
+      <div class="options">
+        <div>
+          <input type="checkbox" id="bathtub" @change="query" v-model="qry.bathtub" />
+          <label for="bathtub">욕조객실</label>
+        </div>
+        <div>
+          <input type="checkbox" id="bidet" @change="query" v-model="qry.bidet" />
+          <label for="bidet">비데객실</label>
+        </div>
+        <div>
+          <input type="checkbox" id="newaircon" @change="query" v-model="qry.newaircon" />
+          <label for="newaircon">개별난방 아닌 방만 보기</label>
+        </div>
+        <div>
+          <input type="checkbox" id="noantique" @change="query" v-model="qry.noantique"/>
+          <label for="noantique">오래된 콘솔박스 없는 방만 보기</label>
+        </div>
+        <div>
+          <input type="checkbox" id="sellable" @change="query" v-model="qry.sellable"/>
+          <label for="sellable">팔 수 있는 방만 보기</label>
+        </div>
+        <div>
+          <input type="checkbox" id="evfar" @change="query" v-model="qry.evfar"/>
+          <label for="evfar">엘레베이터에서 떨어져 있는 방만 보기</label>
+        </div>
+        <div>
+          <input type="checkbox" id="oceanview" @change="query" v-model="qry.oceanview"/>
+          <label for="oceanview">오션뷰</label>
+        </div>
+        <div>
+          <input type="checkbox" id="cityview" @change="query" v-model="qry.cityview"/>
+          <label for="cityview">씨티뷰</label>
+        </div>
+        <select id="persons" v-model="qry.persons" @change="query">
+          <option value="4">4인 이상</option>
+          <option value="3">3인</option>
+          <option value="2">2인 이하</option>
+        </select>
+        <input type="text" id="valSearch" v-model="qry.roomNo" placeholder="방번호" @keyup.enter="searchRoom">
+        <button id="goSearch" @click="searchRoom">방번호로 검색</button>
+      </div>
+      <div class="floor" v-for="(elFloor,idxFl) in filteredFloors" :key="idxFl">
+        <div class="room" v-for="(elRoom,idxRm) in elFloor" :key="idxRm" :class="elRoom.disabled ? disabledClass : ''" @click="infoRoom(idxFl,idxRm)">
+          <p>{{elRoom.TYPE}}({{elRoom.BED}})</p>
+          <b>{{elRoom.ROOM}}</b>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/pub/app.js"></script>
+</body>
