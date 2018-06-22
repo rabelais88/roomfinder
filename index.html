@@ -47,6 +47,7 @@
       display:flex;
       flex-wrap:wrap;
       padding:10px;
+      max-width:800px;
     }
     .options > div{
       padding:5px;
@@ -91,13 +92,17 @@
           <input type="checkbox" id="cityview" @change="query" v-model="qry.cityview"/>
           <label for="cityview">씨티뷰</label>
         </div>
+        <div>
         <select id="persons" v-model="qry.persons" @change="query">
           <option value="4">4인 이상</option>
           <option value="3">3인</option>
           <option value="2">2인 이하</option>
         </select>
-        <input type="text" id="valSearch" v-model="qry.roomNo" placeholder="방번호" @keyup.enter="searchRoom">
-        <button id="goSearch" @click="searchRoom">방번호로 검색</button>
+          <div>
+            <input type="text" id="valSearch" v-model="qry.roomNo" placeholder="방번호" @keyup.enter="searchRoom">
+            <button id="goSearch" @click="searchRoom">방번호로 검색</button>
+          </div>
+        </div>
       </div>
       <div class="floor" v-for="(elFloor,idxFl) in filteredFloors" :key="idxFl">
         <div class="room" v-for="(elRoom,idxRm) in elFloor" :key="idxRm" :class="elRoom.disabled ? disabledClass : ''" @click="infoRoom(idxFl,idxRm)">
